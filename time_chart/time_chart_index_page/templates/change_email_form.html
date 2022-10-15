@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+  <title>Change Email Form</title>
+  <head>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+      html, body {
+      display: flex;
+      justify-content: center;
+      font-family: Roboto, Arial, sans-serif;
+      font-size: 15px;
+      }
+      form {
+      border: 5px solid #f1f1f1;
+      width: 425px;
+      }
+      input[type=text], input[type=password] , input[type=email] {
+      width: 100%;
+      padding: 16px 8px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      }
+      .icon {
+      font-size: 110px;
+      display: flex;
+      justify-content: center;
+      color: #4286f4;
+      }
+      button {
+      background-color: #4286f4;
+      color: white;
+      padding: 14px 0;
+      margin: 10px 0;
+      border: none;
+      cursor: grab;
+      width: 48%;
+      }
+      h1 {
+      text-align:center;
+      font-size:18;
+      }
+      button:hover {
+      opacity: 0.8;
+      }
+      .formcontainer2 {
+      text-align: center;
+      margin: 24px 50px 12px;
+      }
+      .container2 {
+      padding: 16px 0;
+      text-align:left;
+      }
+      span.psw {
+      float: right;
+      padding-top: 0;
+      padding-right: 15px;
+    }
+    </style>
+  </head>
+  <body>
+    <form action="" method="post" novalidate>
+      <h1>E-mail Change</h1>
+      <div class="icon">
+        <i class="fas fa-user-circle"></i>
+      </div>
+      <div class="formcontainer2">
+          <div class="container2">
+             {% csrf_token %}
+              {% for feild in form %}
+              <b>{{feild.label_tag}} </b> {{feild}} <br> {% if feild.errors %}<large style="color : red">** {{feild.errors|striptags}} ** {% endif %} </large><br><br>
+              {% endfor %}
+          </div>
+      <button type="submit"><strong>Change E-mail</strong></button>
+      </div>
+      <div class="container2" style="background-color: #eee">
+        <label style="padding-left: 15px">
+          Back To Account
+        </label>
+        <span class="psw"><a href="{% url 'account' %}">Click here</a></span>
+      </div>
+    </form>
+  </body>
+</html>

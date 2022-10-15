@@ -1,0 +1,99 @@
+{% extends 'base.html' %} 
+
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+
+<h1 class="main_page_title">Settings</h1>
+
+{% include 'message2.html' %}
+
+<form method="post" action="" id="setting_form" onsubmit="val_less_date()">
+  {% csrf_token %}
+  <div class="set">
+    <div class="time">
+      <h2>Your Time [In Weeks] :</h2>
+
+      <input type="number" name="time" id="same1" required/>
+    </div>
+    <small
+      >Vacation , time off , time to yourself , whatever you want to call it, Pay
+      your self first.</small>
+    <div class="annual_bill">
+      <h2>Annual Billing Target [In Hours] :</h2>
+      <input type="number" name="anl_bill" id="same2" required/>
+    </div>
+    <small>Enter your bilable hour goal here.</small>
+    <div class="start_date">
+      <h2>Fiscal Year Start Date :</h2>
+      <input type="date" name="sd" id="same3" required/>
+    </div>
+      <p id="err"></p>
+    <small>So Time pro can track your yearly progress.</small>
+    <div class="weeks">
+      <h2>Select Working Days :</h2>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp;
+      <div class="weekDays-selector">
+        <input type="checkbox" id="weekday0" class="weekday" name="weekday0"  />
+        <label for="weekday0">S</label>
+        <input type="checkbox" id="weekday1" class="weekday" name="weekday1" />
+        <label for="weekday1">M</label>
+        <input type="checkbox" id="weekday2" class="weekday" name="weekday2" />
+        <label for="weekday2">T</label>
+        <input type="checkbox" id="weekday3" class="weekday" name="weekday3" />
+        <label for="weekday3">W</label>
+        <input type="checkbox" id="weekday4" class="weekday" name="weekday4" />
+        <label for="weekday4">Th</label>
+        <input type="checkbox" id="weekday5" class="weekday" name="weekday5" />
+        <label for="weekday5">F</label>
+        <input type="checkbox" id="weekday6" class="weekday" name="weekday6" />
+        <label for="weekday6">S</label>
+      </div>
+    </div>
+    <small>Customize your goals to match your sechule.</small>
+    <div class="buttons1">
+    {% if blocked == "Yes" and new_user == "No" %}
+        <button type="submit" class="button5" disabled style="cursor: not-allowed;">Save</button>
+        <button class="button6" type="reset" disabled style="cursor: not-allowed;">Dismiss</button>
+    {% else %}
+      <button type="submit" class="button5">Save</button>
+      <button class="button6" type="reset">Dismiss</button>
+    {% endif %}
+    </div>
+  </div>
+</form>
+
+<script>
+
+  $(document).ready (function () {  
+    $("#setting_form").validate ();  
+  });  
+  
+</script>
+
+<script>
+
+function TDate() {
+    var UserDate = document.getElementById("same3").value;
+    var ToDate = new Date();
+
+    if (new Date(UserDate).getTime() <= ToDate.getTime()) {
+          alert("The Date must be Bigger or Equal to today date");
+          return false;
+     }
+
+    else{
+
+          return true;
+
+
+    }
+} 
+
+</script>
+
+{% endblock %}

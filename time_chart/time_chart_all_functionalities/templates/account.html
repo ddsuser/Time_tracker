@@ -1,0 +1,70 @@
+{% extends 'base.html' %} 
+
+{% block title %}Account{% endblock %}
+
+{% block content %}
+
+<h1 class="main_page_title">Account</h1>
+
+{% include 'message2.html' %}
+
+<center>
+  <div class="btn-group2">
+    <a href="{% url 'email_change'%}" class="link_page"><button>Manage E-Mail Address</button></a>
+    <a href="{% url 'password_change'%}" class="link_page"><button>Change Password</button></a>
+    <a href="{% url 'exportcsv'%}" class="link_page"><button>Export Time Charts [.csv]</button></a>
+    <a href="{% url 'feedback'%}" class="link_page"><button>Submit Feedback</button></a>
+    {% if user_status == 'Active' %}
+
+    <a class="link_page"><button onclick="document.getElementById('id03').style.display='block'">Sign Out</button></a>
+
+    {% else %}
+
+    <a href="{% url 'index_logout' %}" class="link_page"><button>Sign Out</button></a>
+
+    {% endif %}
+
+  </div>
+</center>
+
+<button class="button2" onclick="document.getElementById('id01').style.display='block'">
+  Delete Account
+</button>
+
+<div id="id01" class="modal">
+  <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span>
+  <div class="modal-content" >
+             {% csrf_token %}
+    <div class="container">
+      <h2>Are you sure you want to delete your account?</h2><br><br><br>
+
+      <div class="clearfix">
+        <a href="{% url 'delete_user' %}" class="link_page"><button class="cancelbtn">
+          Confirm
+        </button></a>
+        <button type="button" onclick="document.getElementById('id01').style.display='none'" class="deletebtn">
+          Cancle
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="id03" class="modal">
+  <span onclick="document.getElementById('id03').style.display='none'" class="close" title="Close Modal">×</span>
+  <div class="modal-content" >
+             {% csrf_token %}
+    <div class="container">
+      <h2>Please stop tracker to signout.</h2><br><br><br>
+      <center>
+        <div class="clearfix">
+          <a href="{% url 'dashboard' %}"><button type="button" onclick="document.getElementById('id02').style.display='none'" class="deletebtn extra" >
+            OK
+          </button></a>
+        </div>
+    </center>    
+    </div>
+  </div>
+</div>
+
+{% endblock %}

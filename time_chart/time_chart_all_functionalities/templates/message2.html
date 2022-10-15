@@ -1,0 +1,37 @@
+<style>
+  .alert-warning {
+    padding: 20px;
+    background-color: #e18079;
+    color: white;
+  }
+
+  .alert-success {
+    padding: 20px;
+    background-color : #dff0d8;
+    color: green;
+  }
+  
+  .closebtn {
+    margin-left: 15px;
+    color: green;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .closebtn:hover {
+    color: black;
+  }
+  </style>
+
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }}">
+  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+    {{message}}
+</div>
+{% endfor %}
+
+

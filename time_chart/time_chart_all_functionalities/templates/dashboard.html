@@ -1,0 +1,216 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h1 class="main_page_title">Dashboard</h1>
+
+{% include 'message2.html' %}
+
+<center>
+  <div class="circle">
+    <div id="chart"></div>
+  </div>
+</center>
+
+<div class="cst_btn">
+  {% if user_status == "Active" %}
+  <form method="post" action="/dashboard">
+    {% csrf_token %}
+    <button class="{{user_status}}" type="submit" id="stopbtn" formaction="/stop">
+      Stop Tracking
+    </button>
+  </form>
+  {% endif %}
+  {% if user_status == "Inactive" and new_user == "No" %}
+  <button class="{{user_status}}" type="submit" id="startbtn"
+    onclick="document.getElementById('id01').style.display='block'"">
+    Start Tracking
+  </button>
+  {% endif %}
+
+  {% if new_user == " Yes" %}
+  <button class="{{user_status}} " type="submit" id="startbtn"
+    onclick="document.getElementById('id02').style.display='block'">
+    Start Tracking
+  </button>
+  {% endif %}
+
+</div>
+
+<div id="id01" class="modal">
+  <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span>
+  <div class="modal-content">
+    {% csrf_token %}
+    <div class="container">
+      <h2>Please provide following information before Start Tracker</h2>
+      <br /><br />
+      <div class="clearfix cstmleft">
+        <form action="#" method="post">
+          {% csrf_token %}
+          <div class="test1">
+            <div class="test2">
+              <label class="entry_label"> Description [Optional] :</label>
+            </div>
+            <div class="test2">
+              <textarea name="desc" id="t2" cols="30" rows="10"></textarea>
+            </div>
+          </div>
+          <br>
+          <div class="test1">
+            <div class="test2">
+              <label class="entry_label"> Category :</label>
+            </div>
+            <div class="test2">
+              <select name="category" id="category">
+                <option value="billable">Billable</option>
+                <option value="non-billable">Non - Billable</option>
+              </select>
+            </div>
+          </div>
+          <br>
+          <br><br>
+          <button formaction="/start" class="deletebtn">Confirm</button>
+          <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">
+            Cancle
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="id02" class="modal">
+  <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">×</span>
+  <div class="modal-content">
+    {% csrf_token %}
+    <div class="container">
+      <h2>Please provide your yearly information before start the tracker.</h2><br><br><br>
+      <center>
+        <div class="clearfix">
+          <a href="{% url 'settings' %}"><button type="button"
+              onclick="document.getElementById('id02').style.display='none'" class="deletebtn extra">
+              OK
+            </button></a>
+        </div>
+      </center>
+    </div>
+  </div>
+</div>
+
+<center>
+  <div class="columns">
+    <div class="column">
+      <b> Remaining </b><br /><br />
+      {{remaining}}
+    </div>
+    <div class="column">
+      <b> YTD</b><br /><br />
+      {{ytd}}
+    </div>
+    <div class="column">
+      <b> Performance </b><br /><br />
+      {{performance}}
+    </div>
+  </div>
+</center>
+<script>
+
+var check_user = '{{ new_user }}'
+var check_performance = {{ performance }}
+
+if (check_user == 'Yes' ){
+
+  var options = {
+    series: [0, 1],
+    chart: {
+      width: 520,
+      type: "pie",
+    },
+    labels: ["Your Work Time", "Your Remaining Time"],
+    responsive: [
+      {
+        breakpoint: 480,
+        options: {
+          chart: {
+            width: 200,
+          },
+          legend: {
+            position: "bottom",
+          },
+        },
+      },
+    ],
+  };
+
+  var chart = new ApexCharts(document.querySelector("#chart"), options);
+  chart.render();
+
+
+
+} else if (check_performance >= 100){
+
+  var user_work_time = {{ ytd }}-{{ remaining }}
+  var user_remaining_time = {{ remaining }}
+  var options = {
+    series: [1, 0],
+    chart: {
+      width: 520,
+      type: "pie",
+    },
+    labels: ["Your Work Time", "Your Remaining Time"],
+    responsive: [
+      {
+        breakpoint: 480,
+        options: {
+          chart: {
+            width: 200,
+          },
+          legend: {
+            position: "bottom",
+          },
+        },
+      },
+    ],
+  };
+
+  var chart = new ApexCharts(document.querySelector("#chart"), options);
+  chart.render();
+
+
+
+
+} else {
+
+  var user_work_time = {{ ytd }}-{{ remaining }}
+  var user_remaining_time = {{ remaining }}
+  var options = {
+    series: [user_work_time, user_remaining_time],
+    chart: {
+      width: 520,
+      type: "pie",
+    },
+    labels: ["Your Work Time", "Your Remaining Time"],
+    responsive: [
+      {
+        breakpoint: 480,
+        options: {
+          chart: {
+            width: 200,
+          },
+          legend: {
+            position: "bottom",
+          },
+        },
+      },
+    ],
+  };
+
+  var chart = new ApexCharts(document.querySelector("#chart"), options);
+  chart.render();
+
+}
+
+</script>
+
+{% endblock %}
